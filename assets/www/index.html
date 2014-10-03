@@ -1,0 +1,314 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>SubwayMaps (Europe)</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		
+<!--	<script type="text/javascript" charset="utf-8" src="scripts/cordova.js"></script>	-->
+		
+		<script type="text/javascript" charset="utf-8" src="scripts/jquery/jquery.js"></script>
+		<script type="text/javascript">
+		$(document).bind("mobileinit", function(){
+		    $.mobile.ajaxEnabled = false;
+		    $.mobile.pushStateEnabled = false;
+		    $.mobile.touchOverflowEnabled = false;
+		    $.mobile.defaultPageTransition  = 'slide';
+		    $.mobile.defaultDialogTransition = 'pop';
+		    $.mobile.transitionFallbacks.slide = 'none';
+		    $.mobile.transitionFallbacks.pop = 'none';
+		    $.mobile.buttonMarkup.hoverDelay = 0;
+		    $.mobile.phonegapNavigationEnabled = true;
+		});
+		</script>
+		<script type="text/javascript" charset="utf-8" src="scripts/jquery/jquery.mobile.js"></script>
+				
+		<script type="text/javascript" charset="utf-8" src="scripts/jquery/flexcroll.js"></script>
+		
+		<script type="text/javascript" charset="utf-8" src="scripts/domain.js"></script>
+		<script type="text/javascript" charset="utf-8" src="scripts/commons.js"></script>
+		
+		
+		<link rel="stylesheet" type="text/css" href="css/jquery.mobile.css"/>
+		<link rel="stylesheet" type="text/css" href="css/flexcrollstyles.css"/>
+		
+		<style type="text/css">
+			.vscrollerbase, .hscrollerbase {
+				visibility: hidden !important; /* visible */
+			}
+			
+			.vscrollerbar, .hscrollerbar { 
+				padding: 0px;
+			}
+		</style>
+		<script type="text/javascript" charset="utf-8">
+		
+			var defaultCity	= 'London';
+			var tubeMapsImages = {
+				'Amsterdam': new CityTubeMap('Amsterdam','images/amsterdam-map.gif'),
+				'Antwerp': new CityTubeMap('Antwerp','images/antwerp-map.gif'),
+				'Athens': new CityTubeMap('Athens','images/athens-map.gif'),
+				'Baku': new CityTubeMap('Baku','images/baku-map.gif'),
+				'Barcelona': new CityTubeMap('Barcelona','images/barcelona-map.gif'),
+				'Berlin': new CityTubeMap('Berlin','images/berlin-map.gif'),
+				'Bielefeld': new CityTubeMap('Bielefeld','images/bielefeld-map.gif'),
+				'Bilbao': new CityTubeMap('Bilbao','images/bilbao-map.gif'),
+				'Birmingham': new CityTubeMap('Birmingham','images/birmingham-map.gif'),
+				'Bochum': new CityTubeMap('Bochum','images/bochum-map.gif'),
+				'Bonn': new CityTubeMap('Bonn','images/bonn-map.gif'),
+				'Brussels': new CityTubeMap('Brussels','images/brussels-map.gif'),
+				'Bucharest': new CityTubeMap('Bucharest','images/bucharest-map.gif'),
+				'Budapest': new CityTubeMap('Budapest','images/budapest-map.gif'),
+				'Catania': new CityTubeMap('Catania','images/catania-map.gif'),
+				'Charleroi': new CityTubeMap('Charleroi','images/charleroi-map.gif'),
+				'Cologne': new CityTubeMap('Cologne','images/cologne-map.gif'),
+				'Copenhagen': new CityTubeMap('Copenhagen','images/copenhagen-map.gif'),
+				'Dnipropetrovsk': new CityTubeMap('Dnipropetrovsk','images/dnipropetrovsk-map.gif'),
+				'Dortmund': new CityTubeMap('Dortmund','images/dortmund-map.gif'),
+				'Duisburg': new CityTubeMap('Duisburg','images/duisburg-map.gif'),
+				'Dusseldorf': new CityTubeMap('Dusseldorf','images/dusseldorf-map.gif'),
+				'Essen': new CityTubeMap('Essen','images/essen-map.gif'),
+				'Frankfurt': new CityTubeMap('Frankfurt','images/frankfurt-map.gif'),
+				'Genoa': new CityTubeMap('Genoa','images/genoa-map.gif'),
+				'Glasgow': new CityTubeMap('Glasgow','images/glasgow-map.gif'),
+				'Hamburg': new CityTubeMap('Hamburg','images/hamburg-map.gif'),
+				'Hanover': new CityTubeMap('Hanover','images/hanover-map.gif'),
+				'Helsinki': new CityTubeMap('Helsinki','images/helsinki-map.gif'),
+				'Kharkiv': new CityTubeMap('Kharkiv','images/kharkiv-map.gif'),
+				'Kiev': new CityTubeMap('Kiev','images/kiev-map.gif'),
+				'Kryvy-rih': new CityTubeMap('Kryvy-rih','images/kryvy-rih-map.gif'),
+				'Lausanne': new CityTubeMap('Lausanne','images/lausanne-map.gif'),
+				'Lille': new CityTubeMap('Lille','images/lille-map.gif'),
+				'Lisbon': new CityTubeMap('Lisbon','images/lisbon-map.gif'),
+				'London': new CityTubeMap('London','images/london-map.gif'),
+				'Lyon': new CityTubeMap('Lyon','images/lyon-map.gif'),
+				'Madrid': new CityTubeMap('Madrid','images/madrid-map.gif'),
+				'Marseille': new CityTubeMap('Marseille','images/marseille-map.gif'),
+				'Milan': new CityTubeMap('Milan','images/milan-map.gif'),
+				'Minsk': new CityTubeMap('Minsk','images/minsk-map.gif'),
+				'Moscow': new CityTubeMap('Moscow','images/moscow-map.gif'),
+				'Munich': new CityTubeMap('Munich','images/munich-map.gif'),
+				'Naples': new CityTubeMap('Naples','images/naples-map.gif'),
+				'Newcastle': new CityTubeMap('Newcastle','images/newcastle-map.gif'),
+				'Nizhniy-novgorod': new CityTubeMap('Nizhniy-novgorod','images/nizhniy-novgorod-map.gif'),
+				'Novosibirsk': new CityTubeMap('Novosibirsk','images/novosibirsk-map.gif'),
+				'Nuremberg': new CityTubeMap('Nuremberg','images/nuremberg-map.gif'),
+				'Oslo': new CityTubeMap('Oslo','images/oslo-map.gif'),
+				'Paris': new CityTubeMap('Paris','images/paris-map.gif'),
+				'Porto': new CityTubeMap('Porto','images/porto-map.gif'),
+				'Prague': new CityTubeMap('Prague','images/prague-map.gif'),
+				'Rennes': new CityTubeMap('Rennes','images/rennes-map.gif'),
+				'Rome': new CityTubeMap('Rome','images/rome-map.gif'),
+				'Rotterdam': new CityTubeMap('Rotterdam','images/rotterdam-map.gif'),
+				'Rouen': new CityTubeMap('Rouen','images/rouen-map.gif'),
+				'Samara': new CityTubeMap('Samara','images/samara-map.gif'),
+				'Sofia': new CityTubeMap('Sofia','images/sofia-map.gif'),
+				'Stockholm': new CityTubeMap('Stockholm','images/stockholm-map.gif'),
+				'St-petersburg': new CityTubeMap('St-petersburg','images/st-petersburg-map.gif'),
+				'Stuttgart': new CityTubeMap('Stuttgart','images/stuttgart-map.gif'),
+				'Tbilisi': new CityTubeMap('Tbilisi','images/tbilisi-map.gif'),
+				'Toulouse': new CityTubeMap('Toulouse','images/toulouse-map.gif'),
+				'Valencia': new CityTubeMap('Valencia','images/valencia-map.gif'),
+				'Vienna': new CityTubeMap('Vienna','images/vienna-map.gif'),
+				'Volgograd': new CityTubeMap('Volgograd','images/volgograd-map.gif'),
+				'Warsaw': new CityTubeMap('Warsaw','images/warsaw-map.gif'),
+				'Wuppertal': new CityTubeMap('Wuppertal','images/wuppertal-map.gif'),
+				'Yekatarinburg': new CityTubeMap('Yekatarinburg','images/yekatarinburg-map.gif'),
+				'Yerevan': new CityTubeMap('Yerevan','images/yerevan-map.gif')
+			};
+			
+			var windowHeight;
+			var windowWidth;
+			var footerHeight;
+			var localStorageEnabled;
+			
+			var pageTubeMap;
+			var pageTubeMapImage;
+			
+			function loaded() {
+				console.log('loaded');
+				
+				//disable taping footer
+				$("[data-role=footer]").fixedtoolbar({ tapToggle: false });
+			
+				windowHeight	= $(window).height();
+				windowWidth		= $(window).width();
+				footerHeight	= $('#main-footer').height();
+				
+				pageTubeMap			= $('#page-tube-map');
+				pageTubeMapImage	= $('#page-tube-map-image');
+				
+				pageTubeMap.height(windowHeight-footerHeight);
+				pageTubeMap.width(windowWidth);
+				
+				//does local storage exist?
+				if (window.localStorage) {
+					localStorageEnabled	= true;
+				} else {
+					localStorageEnabled	= false;
+				}
+				
+				
+	  			fleXenv.fleXcrollMain('page-tube-map');
+	  			
+	  			fleXenv.fleXcrollMain('city-menu-popup-list');
+	  			
+	  			//load city from local storage
+				updateTubeMap();
+			}
+			
+			function updateTubeMap(city) {
+				console.log('updateTubeMap[' + city +']');
+				
+				$('#city-menu-popup').popup('close');
+			
+				if (!city) {
+					if (localStorageEnabled) {
+						var lastSelectedCity = window.localStorage.getItem("keyLastSelectedCity");
+						if (lastSelectedCity) {
+							city	= lastSelectedCity;
+						} else {
+							city	= defaultCity;
+						}					
+					} else {
+						city	= defaultCity;
+					}
+				}
+				
+				var tubeMap	= tubeMapsImages[city];
+				if (tubeMap==undefined) {
+					alert('Error: City ' + city + ' not found!');
+					tubeMap	= tubeMapsImages[defaultCity];
+				}
+				
+				pageTubeMapImage.attr('src',tubeMap.imagePath);
+				
+				if (localStorageEnabled) {
+					window.localStorage.setItem("keyLastSelectedCity", city);
+				}
+				
+				if (pageTubeMap.fleXcroll) { 
+					pageTubeMap.fleXcroll.setScrollPos(0,0);
+				}
+			}
+
+			document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+
+			document.addEventListener('DOMContentLoaded', function () { setTimeout(loaded, 500); }, false);
+			//window.addEventListener('load', setTimeout(function () { loaded(); }, 500), false);
+		</script>
+	</head>
+	
+	//TODO zoomming image
+	// load nbew city - reset position to 0,0
+	
+	<body>
+		<!--- Main Page --->
+		<div data-role="page" id="main-page" data-theme="d">
+			
+			<div data-role="popup" id="city-menu-popup">
+				<ul data-role="listview" data-filter="false" data-autodividers="true" data-inset="true" style="min-height:300px; max-height:500px; min-width:200px;" data-theme="c" data-divider-theme="c" id="city-menu-popup-list">
+					<li><a href="#" onClick="updateTubeMap('Amsterdam')">Amsterdam</a></li>
+					<li><a href="#" onClick="updateTubeMap('Antwerp')">Antwerp</a></li>
+					<li><a href="#" onClick="updateTubeMap('Athens')">Athens</a></li>
+					<li><a href="#" onClick="updateTubeMap('Baku')">Baku</a></li>
+					<li><a href="#" onClick="updateTubeMap('Barcelona')">Barcelona</a></li>
+					<li><a href="#" onClick="updateTubeMap('Berlin')">Berlin</a></li>
+					<li><a href="#" onClick="updateTubeMap('Bielefeld')">Bielefeld</a></li>
+					<li><a href="#" onClick="updateTubeMap('Bilbao')">Bilbao</a></li>
+					<li><a href="#" onClick="updateTubeMap('Birmingham')">Birmingham</a></li>
+					<li><a href="#" onClick="updateTubeMap('Bochum')">Bochum</a></li>
+					<li><a href="#" onClick="updateTubeMap('Bonn')">Bonn</a></li>
+					<li><a href="#" onClick="updateTubeMap('Brussels')">Brussels</a></li>
+					<li><a href="#" onClick="updateTubeMap('Bucharest')">Bucharest</a></li>
+					<li><a href="#" onClick="updateTubeMap('Budapest')">Budapest</a></li>
+					<li><a href="#" onClick="updateTubeMap('Catania')">Catania</a></li>
+					<li><a href="#" onClick="updateTubeMap('Charleroi')">Charleroi</a></li>
+					<li><a href="#" onClick="updateTubeMap('Cologne')">Cologne</a></li>
+					<li><a href="#" onClick="updateTubeMap('Copenhagen')">Copenhagen</a></li>
+					<li><a href="#" onClick="updateTubeMap('Dnipropetrovsk')">Dnipropetrovsk</a></li>
+					<li><a href="#" onClick="updateTubeMap('Dortmund')">Dortmund</a></li>
+					<li><a href="#" onClick="updateTubeMap('Duisburg')">Duisburg</a></li>
+					<li><a href="#" onClick="updateTubeMap('Dusseldorf')">Dusseldorf</a></li>
+					<li><a href="#" onClick="updateTubeMap('Essen')">Essen</a></li>
+					<li><a href="#" onClick="updateTubeMap('Frankfurt')">Frankfurt</a></li>
+					<li><a href="#" onClick="updateTubeMap('Genoa')">Genoa</a></li>
+					<li><a href="#" onClick="updateTubeMap('Glasgow')">Glasgow</a></li>
+					<li><a href="#" onClick="updateTubeMap('Hamburg')">Hamburg</a></li>
+					<li><a href="#" onClick="updateTubeMap('Hanover')">Hanover</a></li>
+					<li><a href="#" onClick="updateTubeMap('Helsinki')">Helsinki</a></li>
+					<li><a href="#" onClick="updateTubeMap('Kharkiv')">Kharkiv</a></li>
+					<li><a href="#" onClick="updateTubeMap('Kiev')">Kiev</a></li>
+					<li><a href="#" onClick="updateTubeMap('Kryvy-rih')">Kryvy Rih</a></li>
+					<li><a href="#" onClick="updateTubeMap('Lausanne')">Lausanne</a></li>
+					<li><a href="#" onClick="updateTubeMap('Lille')">Lille</a></li>
+					<li><a href="#" onClick="updateTubeMap('Lisbon')">Lisbon</a></li>
+					<li><a href="#" onClick="updateTubeMap('London')">London</a></li>
+					<li><a href="#" onClick="updateTubeMap('Lyon')">Lyon</a></li>
+					<li><a href="#" onClick="updateTubeMap('Madrid')">Madrid</a></li>
+					<li><a href="#" onClick="updateTubeMap('Marseille')">Marseille</a></li>
+					<li><a href="#" onClick="updateTubeMap('Milan')">Milan</a></li>
+					<li><a href="#" onClick="updateTubeMap('Minsk')">Minsk</a></li>
+					<li><a href="#" onClick="updateTubeMap('Moscow')">Moscow</a></li>
+					<li><a href="#" onClick="updateTubeMap('Munich')">Munich</a></li>
+					<li><a href="#" onClick="updateTubeMap('Naples')">Naples</a></li>
+					<li><a href="#" onClick="updateTubeMap('Newcastle')">Newcastle</a></li>
+					<li><a href="#" onClick="updateTubeMap('Nizhniy-novgorod')">Nizhniy Novgorod</a></li>
+					<li><a href="#" onClick="updateTubeMap('Novosibirsk')">Novosibirsk</a></li>
+					<li><a href="#" onClick="updateTubeMap('Nuremberg')">Nuremberg</a></li>
+					<li><a href="#" onClick="updateTubeMap('Oslo')">Oslo</a></li>
+					<li><a href="#" onClick="updateTubeMap('Paris')">Paris</a></li>
+					<li><a href="#" onClick="updateTubeMap('Porto')">Porto</a></li>
+					<li><a href="#" onClick="updateTubeMap('Prague')">Prague</a></li>
+					<li><a href="#" onClick="updateTubeMap('Rennes')">Rennes</a></li>
+					<li><a href="#" onClick="updateTubeMap('Rome')">Rome</a></li>
+					<li><a href="#" onClick="updateTubeMap('Rotterdam')">Rotterdam</a></li>
+					<li><a href="#" onClick="updateTubeMap('Rouen')">Rouen</a></li>
+					<li><a href="#" onClick="updateTubeMap('Samara')">Samara</a></li>
+					<li><a href="#" onClick="updateTubeMap('Sofia')">Sofia</a></li>
+					<li><a href="#" onClick="updateTubeMap('Stockholm')">Stockholm</a></li>
+					<li><a href="#" onClick="updateTubeMap('St-petersburg')">St Petersburg</a></li>
+					<li><a href="#" onClick="updateTubeMap('Stuttgart')">Stuttgart</a></li>
+					<li><a href="#" onClick="updateTubeMap('Tbilisi')">Tbilisi</a></li>
+					<li><a href="#" onClick="updateTubeMap('Toulouse')">Toulouse</a></li>
+					<li><a href="#" onClick="updateTubeMap('Valencia')">Valencia</a></li>
+					<li><a href="#" onClick="updateTubeMap('Vienna')">Vienna</a></li>
+					<li><a href="#" onClick="updateTubeMap('Volgograd')">Volgograd</a></li>
+					<li><a href="#" onClick="updateTubeMap('Warsaw')">Warsaw</a></li>
+					<li><a href="#" onClick="updateTubeMap('Wuppertal')">Wuppertal</a></li>
+					<li><a href="#" onClick="updateTubeMap('Yekatarinburg')">Yekatarinburg</a></li>
+					<li><a href="#" onClick="updateTubeMap('Yerevan')">Yerevan</a></li>
+				</ul>
+			</div>
+			
+			<div data-role="popup" id="info-popup" data-theme="c">
+				<p>
+				<div>
+					<center>
+					<img src="icons/icon-36.png" style="vertical-align: middle;"/>
+					<span style="vertical-align: middle;"><strong>SubwayMaps (Europe) v1.4.0</strong></span>
+					</center>
+				</div>
+				</p>
+				<p>Developed by AXIS APPLICATIONS<p>
+				<p>Homepage:<br><a href="http://www.axisapplications.com">www.axisapplications.com</a><p>
+				<p>E-Mail:<br><a href="mailto:support@axisapplications.com">support@axisapplications.com</a><p>
+				<p>Thanks to Robert Schwandl for his maps!<p>
+			</div>
+  			
+  			<div data-role="content" id="page-tube-map" style="overflow: auto; position: relative; padding: 0px;">
+				<!-- dynamic content -->
+				<img id='page-tube-map-image' src="" onLoad="fleXenv.updateScrollBars();"/>
+			</div>
+
+  			<div data-role="footer" data-position="fixed" data-theme="c" class="nav-menu" id="main-footer">
+				<div data-role="navbar" class="nav-menu">
+					<ul>
+						<li><a href="#city-menu-popup" id="main-footer-city" data-icon="search" data-rel="popup">City</a></li>
+						<li><a href="#info-popup" id="main-footer-info" data-icon="info" data-rel="popup">Info</a></li>
+					</ul>
+				</div>
+			</div>
+			
+		</div>
+	</body>
+</html>
